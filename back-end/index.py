@@ -6,6 +6,7 @@ load_dotenv()
 #local variables
 from models.location import Location
 from models.weather import Forecast
+from models.event import Event
 
 from flask_cors import CORS
 app = Flask(__name__)
@@ -16,11 +17,15 @@ CORS(app)
 @app.route('/weather', methods=['GET'])
 def weather():
 
-  latitude = request.args['latitude']
-  longitude = request.args['longitude']
+  if request.args:
 
-  Forecast.fetch(latitude, longitude)
-  return Forecast.fetch(latitude, longitude)
+    latitude = request.args['latitude']
+    longitude = request.args['longitude']
+
+    Forecast.fetch(latitude, longitude)
+    return Forecast.fetch(latitude, longitude)
+  return 'please enter parameters latitude/longitude e.g. http://localhost:5000/weather?latitude=41.3850639&longitude=2.1734035'
+
 
 #LOCATION
 @app.route('/location', methods=['GET'])
@@ -31,8 +36,8 @@ def location():
 #EVENTS
 @app.route('/events', methods=['GET'])
 def events():
-  return 'Events page'
-
+  location = request.args.get('location')
+  return Event.fetch(location)
 
 #MOVIES
 @app.route('/movies', methods=['GET'])

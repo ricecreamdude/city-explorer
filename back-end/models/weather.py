@@ -1,5 +1,5 @@
 from os import environ
-from flask import jsonify, request
+from flask import Flask, jsonify, request
 
 import requests
 
