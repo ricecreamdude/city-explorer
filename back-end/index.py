@@ -7,6 +7,7 @@ load_dotenv()
 from models.location import Location
 from models.weather import Forecast
 from models.event import Event
+from models.movie import Movie
 
 from flask_cors import CORS
 app = Flask(__name__)
@@ -42,7 +43,8 @@ def events():
 #MOVIES
 @app.route('/movies', methods=['GET'])
 def movies():
-  return 'Movie page'
+    title = request.args.get('title')
+  return Movie.fetch(title)
 
 #YELP
 @app.route('/yelp', methods=['GET'])
