@@ -1,4 +1,6 @@
 from os import environ
+from flask import jsonify
+
 import json
 import requests
 
@@ -32,8 +34,8 @@ class Location:
     locations = requests.get(url).json()
 
     #create a new class instance
-
     newLocation = Location(query, locations['results'][0])
+
     #return serialized version of the class instance
     #Return JSON object
-    return json.dumps(newLocation.serialize())
+    return jsonify(newLocation.serialize())

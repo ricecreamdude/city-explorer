@@ -1,37 +1,54 @@
-# from http.server import BaseHTTPRequestHandler, HTTPServer
-# from urllib.parse import urlparse, parse_qs
-
-#.env attributes
-
-# import os
-# import json
-
-import requests
 from flask import Flask, jsonify, request
-
+import requests
 from dotenv import load_dotenv
 load_dotenv()
 
+#local variables
 from models.location import Location
+from models.weather import Forecast
 
-
+from flask_cors import CORS
 app = Flask(__name__)
+CORS(app)
 
-#ROUTES TO BUILD
-#WEATHER
-@app.route('/weather')
+#ROUTES TO BUILD link 
+#WEATHER e.g. http://localhost:5000/weather?latitude=41.3850639&longitude=2.1734035
+@app.route('/weather', methods=['GET'])
 def weather():
-  # http://localhost:5000/weather?data[latitude]=41.3850639&data[longitude]=2.1734035
-  return 'Weather page'
+
+  latitude = request.args['latitude']
+  longitude = request.args['longitude']
+
+  Forecast.fetch(latitude, longitude)
+  return Forecast.fetch(latitude, longitude)
+
 #LOCATION
-@app.route('/location')
+@app.route('/location', methods=['GET'])
 def location():
   city = request.args.get('city')
   return Location.fetch(city)
+
 #EVENTS
-@app.route('/events')
+@app.route('/events', methods=['GET'])
 def events():
   return 'Events page'
+
+
+#MOVIES
+@app.route('/movies', methods=['GET'])
+def movies():
+  return 'Movie page'
+
+#YELP
+@app.route('/yelp', methods=['GET'])
+def yelp():
+  return 'Yelp page'
+
+#TRAIL
+@app.route('/trails', methods=['GET'])
+def trail():
+  return 'Trails page'
+
 
 # #Build handler for HTTP Get Request
 # class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
